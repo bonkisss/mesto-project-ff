@@ -105,3 +105,33 @@ initialCards.forEach(function(cardData) {
   const cardElement = createCard(cardData, handleDeleteCard);
   placesList.appendChild(cardElement);
 });
+
+// DOM-узлы для попапа редактирования профиля
+const editProfilePopup = document.querySelector('.popup_type_edit');
+const editProfileForm = editProfilePopup.querySelector('.popup__form');
+const profileName = document.querySelector('.profile__title');
+const profileDescription = document.querySelector('.profile__description');
+const nameInput = editProfileForm.querySelector('.popup__input_type_name');
+const descriptionInput = editProfileForm.querySelector('.popup__input_type_description');
+const editProfileButton = document.querySelector('.profile__edit-button');
+const editProfileCloseButton = editProfilePopup.querySelector('.popup__close');
+
+// Открытие попапа редактирования профиля
+editProfileButton.addEventListener('click', function() {
+  nameInput.value = profileName.textContent;
+  descriptionInput.value = profileDescription.textContent;
+  editProfilePopup.classList.add('popup_is-opened');
+});
+
+// Закрытие попапа редактирования профиля
+editProfileCloseButton.addEventListener('click', function() {
+  closePopup(editProfilePopup);
+});
+
+// Обработка отправки формы редактирования профиля
+editProfileForm.addEventListener('submit', function(evt) {
+  evt.preventDefault();
+  profileName.textContent = nameInput.value;
+  profileDescription.textContent = descriptionInput.value;
+  closePopup(editProfilePopup);
+});
