@@ -14,6 +14,25 @@ const addCardButton = document.querySelector('.profile__add-button');
 // Находим кнопку закрытия попапа новой карточки
 const newCardCloseButton = newCardPopup.querySelector('.popup__close');
 
+// DOM-узлы для попапа просмотра изображения
+const imagePopup = document.querySelector('.popup_type_image');
+const popupImage = imagePopup.querySelector('.popup__image');
+const popupCaption = imagePopup.querySelector('.popup__caption');
+const imagePopupCloseButton = imagePopup.querySelector('.popup__close');
+
+// Функция открытия попапа с картинкой
+function openImagePopup(name, link) {
+  popupImage.src = link;
+  popupImage.alt = name;
+  popupCaption.textContent = name;
+  imagePopup.classList.add('popup_is-opened');
+}
+
+// Обработчик закрытия попапа с картинкой
+imagePopupCloseButton.addEventListener('click', function() {
+  closePopup(imagePopup);
+});
+
 // Функция создания карточки
 function createCard(cardData, handleDelete) {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
@@ -26,6 +45,11 @@ function createCard(cardData, handleDelete) {
   cardTitle.textContent = cardData.name;
 
   deleteButton.addEventListener('click', () => handleDelete(cardElement));
+
+  // Добавляем обработчик открытия попапа с картинкой
+  cardImage.addEventListener('click', function() {
+    openImagePopup(cardData.name, cardData.link);
+  });
 
   return cardElement;
 }
