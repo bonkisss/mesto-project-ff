@@ -1,6 +1,7 @@
+const cardTemplate = document.querySelector('#card-template').content;
+
 // Функция создания карточки
 export function createCard(cardData, { handleDelete, handleLike, handleImageClick }) {
-  const cardTemplate = document.querySelector('#card-template').content;
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImage = cardElement.querySelector('.card__image');
   const cardTitle = cardElement.querySelector('.card__title');

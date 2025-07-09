@@ -62,12 +62,12 @@ newCardForm.addEventListener('submit', function(evt) {
   closeModal(newCardPopup);
 });
 
-// Открытие попапа редактирования профиля
-editProfileButton.addEventListener('click', function() {
+editProfileButton.addEventListener('click', handleEditProfileClick);
+function handleEditProfileClick() {
   nameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
   openModal(editProfilePopup);
-});
+}
 
 // Закрытие попапа редактирования профиля
 editProfileCloseButton.addEventListener('click', () => closeModal(editProfilePopup));
@@ -90,16 +90,6 @@ document.querySelectorAll('.popup').forEach(popup => {
       closeModal(popup);
     }
   });
-});
-
-// Закрытие любого попапа по Esc
-document.addEventListener('keydown', function(evt) {
-  if (evt.key === 'Escape') {
-    const openedPopup = document.querySelector('.popup_is-opened');
-    if (openedPopup) {
-      closeModal(openedPopup);
-    }
-  }
 });
 
 // Установка аватара и логотипа
