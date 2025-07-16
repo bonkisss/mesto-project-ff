@@ -1,2 +1,3 @@
 # Проектная работа Mesto
-https://bonkiss.github.io/mesto-project-ff
+
+[Ссылка на сайт проекта на GitHub Pages](https://bonkiss.github.io/mesto-project-ff/)
