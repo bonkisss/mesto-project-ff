@@ -6,12 +6,20 @@ const config = {
   }
 };
 
+// Универсальная функция проверки ответа сервера
+function checkResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
 export const getUserInfo = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: {
       authorization: config.headers.authorization
     }
-  }).then(res => res.ok ? res.json() : Promise.reject(res.status));
+  }).then(checkResponse);
 };
 
 export const getInitialCards = () => {
@@ -19,7 +27,7 @@ export const getInitialCards = () => {
     headers: {
       authorization: config.headers.authorization
     }
-  }).then(res => res.ok ? res.json() : Promise.reject(res.status));
+  }).then(checkResponse);
 };
 
 export const updateUserInfo = (name, about) => {
@@ -27,7 +35,7 @@ export const updateUserInfo = (name, about) => {
     method: 'PATCH',
     headers: config.headers,
     body: JSON.stringify({ name, about })
-  }).then(res => res.ok ? res.json() : Promise.reject(res.status));
+  }).then(checkResponse);
 };
 
 export const addCard = (name, link) => {
@@ -35,7 +43,7 @@ export const addCard = (name, link) => {
     method: 'POST',
     headers: config.headers,
     body: JSON.stringify({ name, link })
-  }).then(res => res.ok ? res.json() : Promise.reject(res.status));
+  }).then(checkResponse);
 };
 
 export const deleteCard = (cardId) => {
@@ -44,7 +52,7 @@ export const deleteCard = (cardId) => {
     headers: {
       authorization: config.headers.authorization
     }
-  }).then(res => res.ok ? res.json() : Promise.reject(res.status));
+  }).then(checkResponse);
 };
 
 export const changeAvatar = (avatarUrl) => {
@@ -52,7 +60,7 @@ export const changeAvatar = (avatarUrl) => {
     method: 'PATCH',
     headers: config.headers,
     body: JSON.stringify({ avatar: avatarUrl })
-  }).then(res => res.ok ? res.json() : Promise.reject(res.status));
+  }).then(checkResponse);
 };
 
 export const likeCard = (cardId) => {
@@ -61,7 +69,7 @@ export const likeCard = (cardId) => {
     headers: {
       authorization: config.headers.authorization
     }
-  }).then(res => res.ok ? res.json() : Promise.reject(res.status));
+  }).then(checkResponse);
 };
 
 export const unlikeCard = (cardId) => {
@@ -70,5 +78,5 @@ export const unlikeCard = (cardId) => {
     headers: {
       authorization: config.headers.authorization
     }
-  }).then(res => res.ok ? res.json() : Promise.reject(res.status));
+  }).then(checkResponse);
 };

@@ -11,9 +11,7 @@ import {
   updateUserInfo,
   addCard,
   deleteCard,
-  changeAvatar,
-  likeCard,
-  unlikeCard
+  changeAvatar
 } from './components/api.js';
 
 // DOM-элементы
@@ -37,7 +35,6 @@ const editProfileCloseButton = editProfilePopup.querySelector('.popup__close');
 const avatarPopup = document.querySelector('.popup_type_avatar');
 const avatarForm = avatarPopup.querySelector('.popup__form');
 const avatarInput = avatarForm.querySelector('.popup__input_type_avatar-link');
-const avatarEditIcon = document.querySelector('.profile__image-edit');
 const avatarImage = document.querySelector('.profile__image');
 const avatarPopupCloseButton = avatarPopup.querySelector('.popup__close');
 
@@ -58,18 +55,23 @@ addCardButton.addEventListener('click', () => {
   clearValidation(newCardForm, validationConfig);
   openModal(newCardPopup);
 });
+
 newCardCloseButton.addEventListener('click', () => closeModal(newCardPopup));
+
 editProfileButton.addEventListener('click', () => {
   nameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
   clearValidation(editProfileForm, validationConfig);
   openModal(editProfilePopup);
 });
+
 editProfileCloseButton.addEventListener('click', () => closeModal(editProfilePopup));
+
 avatarImage.addEventListener('click', () => {
   clearValidation(avatarForm, validationConfig);
   openModal(avatarPopup);
 });
+
 avatarPopupCloseButton.addEventListener('click', () => closeModal(avatarPopup));
 imagePopupCloseButton.addEventListener('click', () => closeModal(imagePopup));
 
@@ -81,7 +83,7 @@ function handleImageClick(cardData) {
   openModal(imagePopup);
 }
 
-// Закрытие любого попапа по клику на оверлей
+// Закрытие попапов по оверлею
 document.querySelectorAll('.popup').forEach(popup => {
   popup.addEventListener('mousedown', function(evt) {
     if (evt.target === popup) {
@@ -108,7 +110,6 @@ Promise.all([getUserInfo(), getInitialCards()])
     cards.forEach(cardData => {
       const cardElement = createCard(cardData, {
         handleDelete: handleDeleteCard,
-        handleLike: handleLikeCard,
         handleImageClick: handleImageClick,
         currentUserId: currentUserId
       });
@@ -157,7 +158,6 @@ newCardForm.addEventListener('submit', function(evt) {
     .then(cardData => {
       const cardElement = createCard(cardData, {
         handleDelete: handleDeleteCard,
-        handleLike: handleLikeCard,
         handleImageClick: handleImageClick,
         currentUserId: currentUserId
       });
@@ -205,24 +205,5 @@ function handleDeleteCard(cardElement, cardId) {
     })
     .catch(err => {
       console.error('Ошибка удаления карточки:', err);
-    });
-}
-
-// Лайк/дизлайк карточки
-function handleLikeCard(cardElement, cardId, likeButton, likeCount) {
-  const isLiked = likeButton.classList.contains('card__like-button_is-active');
-  const request = isLiked ? unlikeCard(cardId) : likeCard(cardId);
-
-  request
-    .then(cardData => {
-      likeCount.textContent = Array.isArray(cardData.likes) ? cardData.likes.length : 0;
-      if (cardData.likes.some(user => user._id === currentUserId)) {
-        likeButton.classList.add('card__like-button_is-active');
-      } else {
-        likeButton.classList.remove('card__like-button_is-active');
-      }
-    })
-    .catch(err => {
-      console.error('Ошибка лайка карточки:', err);
     });
 }

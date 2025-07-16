@@ -18,6 +18,12 @@
   border-bottom: 1.5px solid #ff0000;
 }
 
+.popup__error_visible {
+  color: red;
+  font-size: 12px;
+  visibility: visible;
+}
+
 @media screen and (max-width: 568px) {
   .popup__title {
     font-size: 12px;

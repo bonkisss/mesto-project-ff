@@ -1,32 +1,32 @@
 function showInputError(formElement, inputElement, errorMessage, config) {
-  const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+  const errorElement = formElement.querySelector(`.${inputElement.name}-error`);
   inputElement.classList.add(config.inputErrorClass);
   errorElement.textContent = errorMessage;
   errorElement.classList.add(config.errorClass);
 }
 
 function hideInputError(formElement, inputElement, config) {
-  const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+  const errorElement = formElement.querySelector(`.${inputElement.name}-error`);
   inputElement.classList.remove(config.inputErrorClass);
   errorElement.textContent = '';
   errorElement.classList.remove(config.errorClass);
 }
 
 function checkInputValidity(formElement, inputElement, config) {
-  const pattern = /^[a-zA-Zа-яА-ЯёЁ\s-]+$/;
-  if (
-    (inputElement.name === 'name' || inputElement.name === 'place-name') &&
-    inputElement.value &&
-    !pattern.test(inputElement.value)
-  ) {
-    const customMessage = inputElement.dataset.errorMessage || 'Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы';
+  // Используем кастомную ошибку только если patternMismatch
+  if (inputElement.validity.patternMismatch) {
+    const customMessage = inputElement.dataset.errorMessage || inputElement.validationMessage;
     showInputError(formElement, inputElement, customMessage, config);
     return false;
   }
+
+  // Показываем стандартные ошибки
   if (!inputElement.validity.valid) {
     showInputError(formElement, inputElement, inputElement.validationMessage, config);
     return false;
   }
+
+  // Всё валидно — очищаем ошибку
   hideInputError(formElement, inputElement, config);
   return true;
 }
@@ -36,7 +36,7 @@ function hasInvalidInput(inputList) {
 }
 
 function toggleButtonState(inputList, buttonElement, config) {
-  if (inputList.some((inputElement) => !inputElement.validity.valid)) {
+  if (hasInvalidInput(inputList)) {
     buttonElement.classList.add(config.inactiveButtonClass);
     buttonElement.disabled = true;
   } else {
@@ -73,6 +73,7 @@ export function clearValidation(formElement, config) {
   inputList.forEach((inputElement) => {
     hideInputError(formElement, inputElement, config);
   });
+
   buttonElement.classList.add(config.inactiveButtonClass);
   buttonElement.disabled = true;
 }
