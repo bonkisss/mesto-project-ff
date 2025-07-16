@@ -1,6 +1,7 @@
 {
   "name": "mesto-project-ff",
   "version": "1.0.0",
+  "homepage": "https://bonkisss.github.io/mesto-project-ff",
   "description": "",
   "main": "index.js",
   "scripts": {
